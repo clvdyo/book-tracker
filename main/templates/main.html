@@ -1,8 +1,34 @@
+{% extends 'base.html' %} {% block content %}
 <h1>Book Tracker Page</h1>
 
-<h5>Name: </h5>
+<h5>Name:</h5>
 <p>{{name}}</p>
-<!-- Ubahlah sesuai dengan nama kamu -->
-<h5>Class: </h5>
+
+<h5>Class:</h5>
 <p>{{class}}</p>
-<!-- Ubahlah sesuai dengan kelas kamu -->
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Page</th>
+    <th>Description</th>
+    <th>Date Added</th>
+  </tr>
+
+  {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini
+  {%endcomment %} {% for book in books %}
+  <tr>
+    <td>{{book.name}}</td>
+    <td>{{book.page}}</td>
+    <td>{{book.description}}</td>
+    <td>{{book.date_added}}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<br />
+
+<a href="{% url 'main:create_book' %}">
+  <button>Add New Book</button>
+</a>
+{% endblock content %}
