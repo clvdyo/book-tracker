@@ -7,6 +7,8 @@
 <h5>Class:</h5>
 <p>{{class}}</p>
 
+<h5>Sesi terakhir login: {{ last_login }}</h5>
+
 <table>
   <tr>
     <th>Name</th>
@@ -30,5 +32,8 @@
 
 <a href="{% url 'main:create_book' %}">
   <button>Add New Book</button>
+</a>
+<a href="{% url 'main:logout' %}">
+  <button>Logout</button>
 </a>
 {% endblock content %}
