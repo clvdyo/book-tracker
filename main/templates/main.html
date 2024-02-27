@@ -22,6 +22,18 @@
     <td>{{book.page}}</td>
     <td>{{book.description}}</td>
     <td>{{book.date_added}}</td>
+    <td>
+      <a href="{% url 'main:edit_book' book.pk %}">
+          <button>
+              Edit
+          </button>
+      </a>
+      <a href="{% url 'main:delete_book' book.pk %}">
+        <button>
+            Delete
+        </button>
+      </a>
+    </td>
   </tr>
   {% endfor %}
 </table>
