@@ -6,6 +6,73 @@
 
 {% block content %}
 
+<style>
+  body{
+    background-color: #ea8685;
+  }
+  h1 {
+    text-align: center;
+  }
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  form {
+    padding: 20px;
+    margin: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  .login {
+    padding: 50px;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  }
+  .login h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: #353b48;
+    margin-bottom: 30px;
+  }
+  .login form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 20px;
+  }
+  .login label {
+    font-weight: bold;
+    color: #353b48;
+  }
+  .login input[type="text"],
+  .login input[type="password"] {
+    border: none;
+    border-radius: 5px;
+    background-color: #f5f5f5;
+    padding: 10px;
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+  }
+  .login input[type="submit"] {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+  }
+  .login input[type="submit"]:hover {
+    background-color: #45a049;
+  }
+  .login .message {
+    margin-top: 20px;
+    color: green;
+  }
+  .login .error {
+    margin-top: 20px;
+    color: red;
+  }
+</style>
+
 <div class="login">
   <h1>Register</h1>
 

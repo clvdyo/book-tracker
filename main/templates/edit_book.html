@@ -3,7 +3,18 @@
 {% load static %}
 
 {% block content %}
-
+    <style>
+    body {
+      background-color: #ea8685;
+    }
+    .edit_book_btn {
+      background-color: #4caf50;
+      color: white;
+    }
+    .edit_book_btn:hover {
+      background-color: #45a049;
+    }
+    </style>
 <h1>Edit Book</h1>
 
 <form method="POST">
@@ -13,7 +24,7 @@
         <tr>
             <td></td>
             <td>
-                <input type="submit" value="Edit Book"/>
+                <input class="btn edit_book_btn" type="submit" value="Edit Book"/>
             </td>
         </tr>
     </table>

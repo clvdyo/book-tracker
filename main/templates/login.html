@@ -5,6 +5,52 @@
 {% endblock meta %} 
 
 {% block content %}
+
+<style>
+  body {
+    background-color: #ea8685;
+  }
+
+  .login {
+    padding: 50px;
+    text-align: center;
+  }
+  .login table {
+    margin: 0 auto;
+    display: block;
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+  .form-control {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+  }
+  .form-control:focus {
+    border-color: #4caf50;
+    box-shadow: 0 0 5px rgba(0,123,255,0.1);
+  }
+  .login_btn {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  .login_btn:hover {
+    background-color: #45a049;
+  }
+  .btn-danger {
+    background-color: #f44336;
+    color: white;
+  }
+</style>
 <div class="login">
   <h1>Login</h1>
 
