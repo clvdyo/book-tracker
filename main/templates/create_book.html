@@ -1,4 +1,18 @@
 {% extends 'base.html' %} {% block content %}
+
+<style>
+  body {
+    background-color: #ea8685;
+  }
+  .add_book_btn {
+    background-color: #4caf50;
+    color: white;
+  }
+  .add_book_btn:hover {
+    background-color: #45a049;
+  }
+</style>
+
 <h1>Add New Book</h1>
 
 <form method="POST">
@@ -8,7 +22,7 @@
     <tr>
       <td></td>
       <td>
-        <input type="submit" value="Add Book" />
+        <input class="btn add_book_btn"type="submit" value="Add Book" />
       </td>
     </tr>
   </table>
