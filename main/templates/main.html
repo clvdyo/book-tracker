@@ -1,64 +1,5 @@
 {% extends 'base.html' %} {% block content %}
-<nav class="navbar navbar-expand-lg navbar-light bg-light]">
-  <a class="navbar-brand" href="#">Book Tracker</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-    <span class="navbar-toggler-icon"></span>
-  </button>
 
-  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item active">
-        <a class="nav-link" href="#">Home</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'main:create_book' %}">Add New Book</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="{% url 'main:logout' %}">Logout</a> </li>
-    </ul>
-  </div>
-</nav>
-<h1>Book Tracker Page</h1>
-
-<h5>Name:</h5>
-<p>{{name}}</p>
-
-<h5>Class:</h5>
-<p>{{class}}</p>
-
-<table>
-  <tr>
-    <th>Name</th>
-    <th>Page</th>
-    <th>Description</th>
-    <th>Date Added</th>
-  </tr>
-
-  {% comment %} Berikut cara memperlihatkan data produk di bawah baris ini
-  {%endcomment %} {% for book in books %}
-  <tr>
-    <td>{{book.name}}</td>
-    <td>{{book.page}}</td>
-    <td>{{book.description}}</td>
-    <td>{{book.date_added}}</td>
-    <td>
-      <a href="{% url 'main:edit_book' book.pk %}">
-          <button class="btn-light">
-              Edit
-          </button>
-      </a>
-      <a href="{% url 'main:delete_book' book.pk %}">
-        <button class="btn-danger">
-            Delete
-        </button>
-      </a>
-    </td>
-  </tr>
-  {% endfor %}
-</table>
-
-<br />
-<h5>Sesi terakhir login: {{ last_login }}</h5>
 <style>
   body {
     background-color: #ea8685;
@@ -87,4 +28,116 @@
     color: white;
   }
 </style>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light]">
+  <a class="navbar-brand" href="#">Book Tracker</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="#">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'main:create_book' %}">Add New Book</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{% url 'main:logout' %}">Logout</a> </li>
+    </ul>
+  </div>
+</nav>
+
+<h1>Book Tracker Page</h1>
+
+<h5>Name:</h5>
+<p>{{name}}</p>
+
+<h5>Class:</h5>
+<p>{{class}}</p>
+
+<table id="book_table"></table>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h1 class="modal-title fs-5" id="exampleModalLabel">Add New Book</h1>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form id="form" onsubmit="return false;">
+                  {% csrf_token %}
+                  <div class="mb-3">
+                      <label for="name" class="col-form-label">Name:</label>
+                      <input type="text" class="form-control" id="name" name="name"></input>
+                  </div>
+                  <div class="mb-3">
+                      <label for="page" class="col-form-label">Page:</label>
+                      <input type="number" class="form-control" id="page" name="page"></input>
+                  </div>
+                  <div class="mb-3">
+                      <label for="description" class="col-form-label">Description:</label>
+                      <textarea class="form-control" id="description" name="description"></textarea>
+                  </div>
+              </form>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="button_add" data-bs-dismiss="modal">Add Book</button>
+          </div>
+      </div>
+  </div>
+</div>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+  Add Book by AJAX
+</button>
+
+<br />
+<h5>Sesi terakhir login: {{ last_login }}</h5>
+
+
+
+<script>
+  async function getBooks() {
+      return fetch("{% url 'main:show_json' %}").then((res) => res.json())
+  }
+  async function refreshBooks() {
+        document.getElementById("book_table").innerHTML = ""
+        const books = await getBooks()
+        let htmlString = `<tr>
+            <th>Name</th>
+            <th>Page</th>
+            <th>Description</th>
+            <th>Date Added</th>
+        </tr>`
+        books.forEach((item) => {
+            htmlString += `\n<tr>
+            <td>${item.fields.name}</td>
+            <td>${item.fields.page}</td>
+            <td>${item.fields.description}</td>
+            <td>${item.fields.date_added}</td>
+        </tr>` 
+        })
+
+        document.getElementById("book_table").innerHTML = htmlString
+    }
+
+    refreshBooks()
+
+    function addBook() {
+        fetch("{% url 'main:add_book_ajax' %}", {
+            method: "POST",
+            body: new FormData(document.querySelector('#form'))
+        }).then(refreshBooks)
+        
+        document.getElementById("form").reset()
+        return false
+    }
+
+    document.getElementById("button_add").onclick = addBook
+</script>
+
 {% endblock content %}
