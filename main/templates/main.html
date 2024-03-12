@@ -13,12 +13,20 @@
   .navbar-nav .nav-link {
     color: white;
   }
-  th, td {
-  padding: 5px;
-  border-color: black;
-  border-radius: 3px;
-  border-style: double;
+
+  .card {
+    border: none;
+    background-color: #596275;
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease-out;
   }
+
+  .card:hover {
+    transform: translateY(-5px);
+  }
+  
   .btn-light {
     background-color: #4caf50;
     color: white;
@@ -57,7 +65,7 @@
 <h5>Class:</h5>
 <p>{{class}}</p>
 
-<table id="book_table"></table>
+<div id="book_container"></div>
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -98,31 +106,32 @@
 <br />
 <h5>Sesi terakhir login: {{ last_login }}</h5>
 
-
-
 <script>
   async function getBooks() {
       return fetch("{% url 'main:show_json' %}").then((res) => res.json())
   }
   async function refreshBooks() {
-        document.getElementById("book_table").innerHTML = ""
+        document.getElementById("book_container").innerHTML = ""
         const books = await getBooks()
-        let htmlString = `<tr>
-            <th>Name</th>
-            <th>Page</th>
-            <th>Description</th>
-            <th>Date Added</th>
-        </tr>`
+        let htmlString = `<div class="row">`
         books.forEach((item) => {
-            htmlString += `\n<tr>
-            <td>${item.fields.name}</td>
-            <td>${item.fields.page}</td>
-            <td>${item.fields.description}</td>
-            <td>${item.fields.date_added}</td>
-        </tr>` 
+            htmlString += `
+            <div class="col-md-4 mb-3">
+              <div class="card">
+                <div class="card-body">
+                  <h5 class="card-title">${item.fields.name}</h5>
+                  <p class="card-text">
+                    <b>Page:</b> ${item.fields.page}<br>
+                    <b>Description:</b> ${item.fields.description}<br>
+                    <b>Date Added:</b> ${item.fields.date_added}
+                  </p>
+                </div>
+              </div>
+            </div>
+            `
         })
-
-        document.getElementById("book_table").innerHTML = htmlString
+        htmlString += `</div>`
+        document.getElementById("book_container").innerHTML = htmlString
     }
 
     refreshBooks()
