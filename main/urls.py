@@ -1,5 +1,5 @@
 from django.urls import path
-from main.views import show_main, create_book, show_xml, show_json, show_xml_by_book_id, show_json_by_book_id, register, login_user, logout_user, edit_book, delete_book, add_book_ajax
+from main.views import show_main, create_book, show_xml, show_json, show_xml_by_book_id, show_json_by_book_id, register, login_user, logout_user, edit_book, delete_book, add_book_ajax, create_book_flutter
 
 app_name = 'main'
 
@@ -16,4 +16,5 @@ urlpatterns = [
     path('edit-book/<int:book_id>', edit_book, name='edit_book'),
     path('delete/<int:book_id>', delete_book, name='delete_book'),
     path('create-book-ajax/', add_book_ajax, name='add_book_ajax'),
+    path('create-flutter/', create_book_flutter, name='create_book_flutter'),
 ]

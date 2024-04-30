@@ -6,15 +6,16 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from main.forms import BookForm
 from main.models import Book
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseNotFound, JsonResponse
 from django.core import serializers
 from django.urls import reverse
 import datetime
+import json
+
 
 # Create your views here.
-@login_required(login_url='/login')
 def show_main(request):
-    books = Book.objects.filter(user=request.user)
+    books = Book.objects.all()
 
     context = {
         'name': request.user.username,
@@ -73,7 +74,6 @@ def login_user(request):
         if user is not None:
             login(request, user)
             response = HttpResponseRedirect(reverse("main:show_main"))
-            response.set_cookie('last_login', str(datetime.datetime.now()))
             return response
         else:
             messages.info(request, 'Sorry, incorrect username or password. Please try again.')
@@ -123,3 +123,22 @@ def add_book_ajax(request):
         return HttpResponse(b"CREATED", status=201)
 
     return HttpResponseNotFound()
+
+@csrf_exempt
+def create_book_flutter(request):
+    if request.method == 'POST':
+
+        data = json.loads(request.body)
+
+        new_book = Book.objects.create(
+            user = request.user,
+            name = data["name"],
+            page = int(data["page"]),
+            description = data["description"]
+        )
+
+        new_book.save()
+
+        return JsonResponse({"status": "success"}, status=200)
+    else:
+        return JsonResponse({"status": "error"}, status=401)

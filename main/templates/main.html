@@ -113,6 +113,7 @@
   async function refreshBooks() {
         document.getElementById("book_container").innerHTML = ""
         const books = await getBooks()
+        
         let htmlString = `<div class="row">`
         books.forEach((item) => {
             htmlString += `
